@@ -1,5 +1,8 @@
 import { VerticalBox } from "std-widgets.slint";
 import { MainMenu } from "./screens/main_menu.slint";
+import { OilTemperature } from "./screens/oil_temperature.slint";
+import { OilPressure } from "./screens/oil_pressure.slint";
+import { LapTimer } from "./screens/lap_timer.slint";
 
 export component App inherits Window {
     title: "Circular Display App";
@@ -14,18 +17,25 @@ export component App inherits Window {
         key-pressed(event) => {
             if (event.text == Key.UpArrow) {
                 debug("Up was pressed");
-                if(root.selected_index < 2) {
-                    root.selected_index += 1;
+                if(root.selected_index > 0 && root.visible_screen_index == 0) {
+                    root.selected_index -= 1;
                 }
             }
             if (event.text == Key.DownArrow) {
                 debug("Down was pressed");
-                if(root.selected_index > 0) {
-                    root.selected_index -= 1;
+                if(root.selected_index < 2 && root.visible_screen_index == 0) {
+                    root.selected_index += 1;
                 }
             }
             if (event.text == Key.Return) {
-                debug("Return was pressed")
+                debug("Return was pressed");
+                if(root.visible_screen_index == 0) {
+                    // If on menu screen set new selected screen
+                    root.visible_screen_index = root.selected_index + 1;
+                }
+                else {
+                    root.visible_screen_index = 0;
+                }
             }
             accept
         }
@@ -34,6 +44,18 @@ export component App inherits Window {
     MainMenu {
         selected_index: selected_index;
         visible: visible_screen_index == 0;
+    }
+
+    OilTemperature {
+        visible: visible_screen_index == 1;
+    }
+
+    OilPressure {
+        visible: visible_screen_index == 2;
+    }
+
+    LapTimer {
+        visible: visible_screen_index == 3;
     }
     
 }
