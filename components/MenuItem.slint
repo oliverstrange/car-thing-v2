@@ -1,0 +1,17 @@
+
+export component MenuItem inherits Rectangle {
+    in property <string> text: "";
+    in property <bool> selected: false;
+    
+    width: 100%;
+    height: 30px;
+    background: transparent;
+    
+    Text {
+        text: parent.text;
+        color: parent.selected ? #ffffff : #aaaaaa;
+        font-size: parent.selected ? 20px : 16px;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+    }
+}

@@ -1,0 +1,14 @@
+import { VerticalBox } from "std-widgets.slint";
+import { MainMenu } from "./screens/main_menu.slint";
+
+export component App inherits Window {
+    title: "Circular Display App";
+    width: 240px;
+    height: 240px;
+    background: #111111;
+    
+    MainMenu {
+        selected_index: 0;
+    }
+    
+}

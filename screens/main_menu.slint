@@ -1,0 +1,27 @@
+import { VerticalBox } from "std-widgets.slint";
+import { MenuItem } from "../components/MenuItem.slint";
+
+export component MainMenu {
+    width: 240px;
+    height: 240px;
+    
+    in-out property <int> selected_index: 0;
+    
+    property <[{id: int, name: string}]> menu_items: [
+        {id: 0, name: "Oil Temperature"},
+        {id: 1, name: "Oil Presure"},
+        {id: 2, name: "Lap Timer"}
+    ];
+    
+    VerticalBox {
+        //alignment: center;
+        spacing: 25px;
+        y: (self.height / 2) - (55 / 2) * 1px - (selected_index * 55) * 1px;
+
+        for item in root.menu_items: MenuItem {
+            text: item.name;
+            selected: selected_index == item.id;
+        }
+        
+    }
+}
