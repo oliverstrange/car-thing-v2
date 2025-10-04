@@ -15,27 +15,20 @@ export component App inherits Window {
 
     my-key-handler := FocusScope {
         key-pressed(event) => {
-            if (event.text == Key.UpArrow) {
-                debug("Up was pressed");
-                if(root.selected_index > 0 && root.visible_screen_index == 0) {
+            if(root.visible_screen_index == 0) {
+                // Handle keystrokes for menu screen
+                if (event.text == Key.UpArrow && root.selected_index > 0) {
                     root.selected_index -= 1;
                 }
-            }
-            if (event.text == Key.DownArrow) {
-                debug("Down was pressed");
-                if(root.selected_index < 2 && root.visible_screen_index == 0) {
+                if (event.text == Key.DownArrow && root.selected_index < 2) {
                     root.selected_index += 1;
                 }
-            }
-            if (event.text == Key.Return) {
-                debug("Return was pressed");
-                if(root.visible_screen_index == 0) {
-                    // If on menu screen set new selected screen
+                if (event.text == Key.Return) {
                     root.visible_screen_index = root.selected_index + 1;
                 }
-                else {
-                    root.visible_screen_index = 0;
-                }
+            }
+            else if (event.text == Key.Return) {
+                root.visible_screen_index = 0;
             }
             accept
         }
