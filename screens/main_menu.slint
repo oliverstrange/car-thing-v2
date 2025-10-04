@@ -14,9 +14,13 @@ export component MainMenu {
     ];
     
     VerticalBox {
-        //alignment: center;
         spacing: 25px;
         y: (self.height / 2) - (55 / 2) * 1px - (selected_index * 55) * 1px;
+
+        animate y {
+            duration: 300ms;
+            easing: ease-in-out;
+        }
 
         for item in root.menu_items: MenuItem {
             text: item.name;

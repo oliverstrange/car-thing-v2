@@ -6,9 +6,34 @@ export component App inherits Window {
     width: 240px;
     height: 240px;
     background: #111111;
-    
+
+    property <int> selected_index: 0;   // Current menu item
+    property <int> visible_screen_index: 0;   // Current visible screen
+
+    my-key-handler := FocusScope {
+        key-pressed(event) => {
+            if (event.text == Key.UpArrow) {
+                debug("Up was pressed");
+                if(root.selected_index < 2) {
+                    root.selected_index += 1;
+                }
+            }
+            if (event.text == Key.DownArrow) {
+                debug("Down was pressed");
+                if(root.selected_index > 0) {
+                    root.selected_index -= 1;
+                }
+            }
+            if (event.text == Key.Return) {
+                debug("Return was pressed")
+            }
+            accept
+        }
+    }
+
     MainMenu {
-        selected_index: 0;
+        selected_index: selected_index;
+        visible: visible_screen_index == 0;
     }
     
 }

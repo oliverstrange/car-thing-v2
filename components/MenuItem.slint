@@ -13,5 +13,14 @@ export component MenuItem inherits Rectangle {
         font-size: parent.selected ? 20px : 16px;
         horizontal-alignment: center;
         vertical-alignment: center;
+
+        animate color {
+            duration: 300ms;
+            easing: ease-in-out;
+        }
+        animate font-size {
+            duration: 300ms;
+            easing: ease-in-out;
+        }
     }
 }
