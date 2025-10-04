@@ -13,23 +13,55 @@ export component App inherits Window {
     property <int> selected_index: 0;   // Current menu item
     property <int> visible_screen_index: 0;   // Current visible screen
 
+    callback move_up();
+    callback move_down();
+    callback enter();
+
+    move_up() => {
+        if(visible_screen_index == 0) {
+            // Menu screen
+            if (selected_index > 0) {
+                selected_index -= 1;
+            }
+        }
+        
+    }
+    move_down() => {
+        if(visible_screen_index == 0) {
+            // Menu screen
+            if (selected_index < 2) {
+                selected_index += 1;
+            }
+        }
+    }
+    enter() => {
+        if(visible_screen_index == 0) {
+            // Menu screen
+            visible_screen_index = root.selected_index + 1;
+        }
+        else {
+            // Function screen
+            visible_screen_index = 0;
+        }
+    }
+
+    // -----------------------------
+    // Keyboard handler
+    // -----------------------------
     my-key-handler := FocusScope {
         key-pressed(event) => {
-            if(root.visible_screen_index == 0) {
-                // Handle keystrokes for menu screen
-                if (event.text == Key.UpArrow && root.selected_index > 0) {
-                    root.selected_index -= 1;
-                }
-                if (event.text == Key.DownArrow && root.selected_index < 2) {
-                    root.selected_index += 1;
-                }
-                if (event.text == Key.Return) {
-                    root.visible_screen_index = root.selected_index + 1;
-                }
-            }
-            else if (event.text == Key.Return) {
-                root.visible_screen_index = 0;
-            }
+            if (event.text == Key.UpArrow) {
+                debug("Up pressed");
+                move_up();
+            };
+            if (event.text == Key.DownArrow) {
+                debug("Down pressed");
+                move_down();
+            };
+            if (event.text == Key.Return) {
+                debug("Enter pressed");
+                enter();
+            };
             accept
         }
     }

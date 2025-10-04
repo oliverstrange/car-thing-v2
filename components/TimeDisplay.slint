@@ -1,0 +1,10 @@
+export component TimeDisplay inherits Text {
+    in property <int> seconds: 0;
+
+    font-size: 30px;
+    text: {
+        (floor(seconds / 60) < 10 ? "0" : "") + floor(seconds / 60) + 
+        ":" + (Math.mod(seconds, 60) < 10 ? "0" : "") + 
+        Math.mod(seconds, 60);
+    }
+}

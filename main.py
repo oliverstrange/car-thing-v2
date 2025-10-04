@@ -1,4 +1,5 @@
 import slint
+from handlers.gpio import GPIOHandler
 
 def main():
     """Main function to run the circular display app with Python backend."""
@@ -6,6 +7,11 @@ def main():
         # Load Slint app
         App = slint.load_file("main.slint").App
         app = App()
+
+        # -------------------------------
+        # Connect GPIO inputs
+        # -------------------------------
+        gpio = GPIOHandler(app)
 
         # Run Slint in the main thread
         app.run()

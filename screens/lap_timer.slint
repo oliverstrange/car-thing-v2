@@ -1,16 +1,15 @@
 import { VerticalBox } from "std-widgets.slint";
-import { MenuItem } from "../components/MenuItem.slint";
+import { TimeDisplay } from "../components/TimeDisplay.slint";
 
 export component LapTimer {
     width: 240px;
     height: 240px;
 
     property <int> seconds: 0;
-    in property <bool> running: false;
 
     timer := Timer {
         interval: 1s;
-        running: running;
+        running: true;
         triggered() => {
             seconds += 1;
         }
@@ -24,9 +23,8 @@ export component LapTimer {
             clip: false;
             height: 50px;
             background: #6771ff;
-            Text {
-                font-size: 30px;
-                text: seconds;
+            TimeDisplay {
+                seconds: seconds;
             }
         }
     }
