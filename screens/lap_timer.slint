@@ -7,11 +7,32 @@ export component LapTimer {
 
     property <int> seconds: 0;
 
+    callback start_stop();
+    callback reset();
+
     timer := Timer {
         interval: 1s;
-        running: true;
+        running: false;
         triggered() => {
             seconds += 1;
+        }
+    }
+
+    start_stop() => {
+        debug("Timer startstop called");
+        if (timer.running) {
+            timer.running = false;
+        }
+        else {
+            timer.running = true;
+        }
+        time_display.start_stop_blinking();
+    }
+
+    reset() => {
+        if (!timer.running) {
+            time_display.start_stop_blinking();
+            seconds = 0;
         }
     }
 
@@ -23,7 +44,8 @@ export component LapTimer {
             clip: false;
             height: 50px;
             background: #6771ff;
-            TimeDisplay {
+
+            time_display := TimeDisplay {
                 seconds: seconds;
             }
         }

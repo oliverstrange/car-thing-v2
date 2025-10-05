@@ -21,7 +21,7 @@ class GPIOHandler:
         try:
             # Rotary encoder GPIO pins
             self.encoder = RotaryEncoder(a=17, b=18, max_steps=100)
-            self.button = Button(27)  # optional push button
+            self.button = Button(27)
 
             # Track last position to detect rotation direction
             self.last_steps = 0

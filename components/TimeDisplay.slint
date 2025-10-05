@@ -1,10 +1,42 @@
 export component TimeDisplay inherits Text {
-    in property <int> seconds: 0;
 
+    in property <int> seconds: 0;
+    property <bool> blinking: false;
+
+    callback start_stop_blinking();
+
+    start_stop_blinking => {
+        if(seconds > 0) {
+            blinking = !blinking;
+        }
+        if (!blinking) {
+            self.color = #000000;
+        }
+    }
+
+    color: #000000;
     font-size: 30px;
     text: {
         (floor(seconds / 60) < 10 ? "0" : "") + floor(seconds / 60) + 
         ":" + (Math.mod(seconds, 60) < 10 ? "0" : "") + 
         Math.mod(seconds, 60);
+    }
+
+    animate color {
+        duration: 100ms;
+        easing: ease-in-out;
+    }
+
+    blinking_timer := Timer {
+        interval: 400ms;
+        running: blinking;
+        triggered() => {
+            if (parent.color == #000000) {
+                parent.color = #00000078;
+            }
+            else {
+                parent.color = #000000;
+            }
+        }
     }
 }
