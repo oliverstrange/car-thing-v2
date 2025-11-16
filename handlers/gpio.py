@@ -19,7 +19,7 @@ class GPIOHandler:
 
         try:
             # Rotary encoder GPIO pins
-            self.encoder = RotaryEncoder(a=19, b=26, max_steps=100, wrap=True)
+            self.encoder = RotaryEncoder(a=19, b=26, max_steps=16, wrap=True)
             self.button = Button(22)
 
             # Attach event handlers
@@ -34,16 +34,19 @@ class GPIOHandler:
             self.button = None
 
     def _rotated_clockwise(self):
+        print("Rotated clockwise")
         if not GPIO_AVAILABLE or self.encoder is None:
             return
         self.app.move_up()
 
     def _rotated_counterclockwise(self):
+        print("Rotated counterclockwise")
         if not GPIO_AVAILABLE or self.encoder is None:
             return
         self.app.move_down()
 
     def _pressed(self):
+        print("Button pressed")
         if not GPIO_AVAILABLE or self.button is None:
             return
         self.app.enter()

@@ -11,7 +11,7 @@ def main():
         # -------------------------------
         # Connect GPIO inputs
         # -------------------------------
-        #gpio = GPIOHandler(app)
+        gpio = GPIOHandler(app)
 
         # Run Slint in the main thread
         app.run()
