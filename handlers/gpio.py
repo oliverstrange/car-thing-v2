@@ -19,8 +19,8 @@ class GPIOHandler:
 
         try:
             # Rotary encoder GPIO pins
-            self.encoder = RotaryEncoder(a=17, b=18, max_steps=100, wrap=True)
-            self.button = Button(27)
+            self.encoder = RotaryEncoder(a=19, b=26, max_steps=100, wrap=True)
+            self.button = Button(22)
 
             # Attach event handlers
             self.encoder.when_rotated_clockwise = self._rotated_clockwise
