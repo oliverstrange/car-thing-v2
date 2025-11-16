@@ -25,12 +25,12 @@ class GPIOHandler:
             self.button = Button(22)
 
             while True:  # Infinite loop to continuously monitor the encoder
-                current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
+                self.current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
 
                 # Check if the rotary encoder value has changed
-                if self.last_rotary_value != current_rotary_value:
-                    print("Result =", current_rotary_value)  # Print the current value
-                    self.last_rotary_value = current_rotary_value  # Update the last value
+                if self.last_rotary_value != self.current_rotary_value:
+                    print("Result =", self.current_rotary_value)  # Print the current value
+                    self.last_rotary_value = self.current_rotary_value  # Update the last value
 
                 # Check if the rotary encoder is pressed
                 if self.button.is_pressed:
