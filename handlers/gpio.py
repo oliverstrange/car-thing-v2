@@ -13,6 +13,7 @@ except (ImportError, OSError) as e:
 class GPIOHandler:
     def __init__(self, app):
         self.app = app
+        self.last_rotary_value = 0
 
         if not GPIO_AVAILABLE:
             print("GPIOHandler disabled (not a Raspberry Pi environment)")
@@ -23,15 +24,13 @@ class GPIOHandler:
             self.encoder = RotaryEncoder(a=19, b=26, max_steps=16, wrap=True)
             self.button = Button(22)
 
-            self.last_rotary_value = 0
-
             while True:  # Infinite loop to continuously monitor the encoder
                 current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
 
                 # Check if the rotary encoder value has changed
-                if last_rotary_value != current_rotary_value:
+                if self.last_rotary_value != current_rotary_value:
                     print("Result =", current_rotary_value)  # Print the current value
-                    last_rotary_value = current_rotary_value  # Update the last value
+                    self.last_rotary_value = current_rotary_value  # Update the last value
 
                 # Check if the rotary encoder is pressed
                 if self.button.is_pressed:
