@@ -23,6 +23,8 @@ class GPIOHandler:
             self.encoder = RotaryEncoder(a=19, b=26, max_steps=16, wrap=True)
             self.button = Button(22)
 
+            self.last_rotary_value = 0
+
             while True:  # Infinite loop to continuously monitor the encoder
                 current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
 
