@@ -26,6 +26,7 @@ class GPIOHandler:
             self.encoder.when_rotated_clockwise = self._rotated_clockwise
             self.encoder.when_rotated_counterclockwise = self._rotated_counterclockwise
             self.button.when_pressed = self._pressed
+
         except Exception as e:
             print("Error initializing GPIOHandler:", e)
             print("GPIO input disabled")
@@ -45,5 +46,4 @@ class GPIOHandler:
     def _pressed(self):
         if not GPIO_AVAILABLE or self.button is None:
             return
-
         self.app.enter()
