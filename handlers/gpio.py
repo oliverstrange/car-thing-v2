@@ -28,7 +28,8 @@ class GPIOHandler:
             self.encoder.steps = 0
 
             # Attach event handlers
-            self.encoder.when_rotated = self._rotated
+            self.encoder.when_rotated_clockwise = self._rotated_clockwise
+            self.encoder.when_rotated_counterclockwise = self._rotated_counterclockwise
             self.button.when_pressed = self._pressed
         except Exception as e:
             print("Error initializing GPIOHandler:", e)
@@ -36,17 +37,15 @@ class GPIOHandler:
             self.encoder = None
             self.button = None
 
-    def _rotated(self):
+    def _rotated_clockwise(self):
         if not GPIO_AVAILABLE or self.encoder is None:
             return
+        self.app.move_up()
 
-        delta = self.encoder.steps - getattr(self, "last_steps", 0)
-        self.last_steps = self.encoder.steps
-
-        if delta > 0:
-            self.app.move_down()
-        elif delta < 0:
-            self.app.move_up()
+    def _rotated_counterclockwise(self):
+        if not GPIO_AVAILABLE or self.encoder is None:
+            return
+        self.app.move_down()
 
     def _pressed(self):
         if not GPIO_AVAILABLE or self.button is None:
