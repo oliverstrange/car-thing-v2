@@ -21,8 +21,11 @@ class GPIOHandler:
 
         try:
             # Rotary encoder GPIO pins
+            print("Initializing rotary encoder")
             self.encoder = RotaryEncoder(a=19, b=26, max_steps=16, wrap=True)
+            print("Initializing button")
             self.button = Button(22)
+            print("GPIO initialized")
 
             while True:  # Infinite loop to continuously monitor the encoder
                 self.current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
