@@ -1,4 +1,5 @@
 import sys
+from time import sleep
 
 try:
     from gpiozero import RotaryEncoder, Button
@@ -22,10 +23,26 @@ class GPIOHandler:
             self.encoder = RotaryEncoder(a=19, b=26, max_steps=16, wrap=True)
             self.button = Button(22)
 
+            while True:  # Infinite loop to continuously monitor the encoder
+                current_rotary_value = self.encoder.steps  # Read current step count from rotary encoder
+
+                # Check if the rotary encoder value has changed
+                if last_rotary_value != current_rotary_value:
+                    print("Result =", current_rotary_value)  # Print the current value
+                    last_rotary_value = current_rotary_value  # Update the last value
+
+                # Check if the rotary encoder is pressed
+                if self.button.is_pressed:
+                    print("Button pressed!")  # Print message on button press
+                    self.app.enter()
+                    self.button.wait_for_release()  # Wait until button is released
+
+                sleep(0.1)  # Short delay to prevent excessive CPU usage
+
             # Attach event handlers
-            self.encoder.when_rotated_clockwise = self._rotated_clockwise
-            self.encoder.when_rotated_counterclockwise = self._rotated_counterclockwise
-            self.button.when_pressed = self._pressed
+            #self.encoder.when_rotated_clockwise = self._rotated_clockwise
+            #self.encoder.when_rotated_counterclockwise = self._rotated_counterclockwise
+            #self.button.when_pressed = self._pressed
 
         except Exception as e:
             print("Error initializing GPIOHandler:", e)
