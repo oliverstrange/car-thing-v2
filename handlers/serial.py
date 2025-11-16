@@ -11,7 +11,7 @@ except ImportError as e:
 
 
 class SerialHandler:
-    def __init__(self, app, port='/dev/ttyUSB0', baudrate=9600):
+    def __init__(self, app, port='/dev/ttyACM0', baudrate=9600):
         """
         Initialize GPIOHandler with serial communication.
         
