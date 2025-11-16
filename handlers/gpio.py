@@ -10,9 +10,8 @@ except (ImportError, OSError) as e:
 
 
 class GPIOHandler:
-    def __init__(self, app, menu_length=3):
+    def __init__(self, app):
         self.app = app
-        self.menu_length = menu_length
 
         if not GPIO_AVAILABLE:
             print("GPIOHandler disabled (not a Raspberry Pi environment)")
@@ -20,12 +19,8 @@ class GPIOHandler:
 
         try:
             # Rotary encoder GPIO pins
-            self.encoder = RotaryEncoder(a=17, b=18, max_steps=100)
+            self.encoder = RotaryEncoder(a=17, b=18, max_steps=100, wrap=True)
             self.button = Button(27)
-
-            # Track last position to detect rotation direction
-            self.last_steps = 0
-            self.encoder.steps = 0
 
             # Attach event handlers
             self.encoder.when_rotated_clockwise = self._rotated_clockwise
