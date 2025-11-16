@@ -12,6 +12,9 @@ except (ImportError, OSError) as e:
 
 class GPIOHandler:
     def __init__(self, app):
+
+        sleep(1)
+
         self.app = app
         self.last_rotary_value = 0
 
