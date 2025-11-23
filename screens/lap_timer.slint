@@ -1,16 +1,12 @@
 import { VerticalBox } from "std-widgets.slint";
 import { TimeDisplay } from "../components/TimeDisplay.slint";
-import { PathElement } from "../components/PathElement.slint";
 
 export component LapTimer {
     width: 240px;
     height: 240px;
-
     property <int> seconds: 0;
-
     callback start_stop();
     callback reset();
-
     timer := Timer {
         interval: 1s;
         running: false;
@@ -23,48 +19,32 @@ export component LapTimer {
         debug("Timer startstop called");
         if (timer.running) {
             timer.running = false;
-        }
-        else {
+        } else {
             timer.running = true;
         }
         time_display.start_stop_blinking();
     }
-
     reset() => {
         if (!timer.running) {
             time_display.start_stop_blinking();
             seconds = 0;
         }
     }
-
-
-    Rectangle {
-        clip: false;
-        height: 50px;
-        width: 200px;
-        border-radius: 17px;
-        background: #6771ff;
-
-        time_display := TimeDisplay {
-            seconds: seconds;
-        }
+    time_display := TimeDisplay {
+        seconds: seconds;
     }
 
-    bgpath:= Path {
+    bgpath := Path {
         stroke: #7a7a7a;
         stroke-width: 10px;
-
         private property <float> radius: min(self.viewbox-width, self.viewbox-height) / 2 + 10;
         private property <float> start-x: self.viewbox-width / 2;
         private property <float> start-y: self.viewbox-height / 2;
-
         private property <float> progress: 0.999999;
-
         viewbox-width: 100;
         viewbox-height: 80;
         width: 100%;
         height: 100%;
-
         MoveTo {
             x: start-x + radius * sin(360deg);
             y: start-y + radius * cos(360deg);
@@ -84,22 +64,18 @@ export component LapTimer {
     path := Path {
         stroke: #26ccfa;
         stroke-width: 10px;
-
         private property <float> radius: min(self.viewbox-width, self.viewbox-height) / 2 + 10;
         private property <float> start-x: self.viewbox-width / 2;
         private property <float> start-y: self.viewbox-height / 2;
-
         private property <float> progress: Math.mod(seconds, 60) / 60;
         animate progress {
             duration: 200ms;
             easing: linear;
         }
-
         viewbox-width: 100;
         viewbox-height: 80;
         width: 100%;
         height: 100%;
-
         MoveTo {
             x: start-x + radius * sin(360deg);
             y: start-y + radius * cos(360deg);
@@ -114,5 +90,4 @@ export component LapTimer {
             large-arc: path.progress > 0.5;
         }
     }
-
 }
