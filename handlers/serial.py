@@ -1,5 +1,6 @@
 import threading
 from time import sleep
+import slint
 
 try:
     import serial
@@ -53,6 +54,7 @@ class SerialHandler:
             return
 
         last_heartbeat = 0
+        print("Entering serial loop", flush=True)
         while self.running:
             try:
                 import time
@@ -61,12 +63,15 @@ class SerialHandler:
                     print(f"HEARTBEAT {current_time}", flush=True)
                     last_heartbeat = current_time
 
+                # print("Checking in_waiting...", flush=True)
                 if self.serial_conn.in_waiting > 0:
                     print("Data detected, reading...", flush=True)
                     line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
                     if line:
                         print(f"Received: {line}", flush=True)
                         self._process_command(line)
+                
+                # print("Sleeping...", flush=True)
                 sleep(0.01)
             except Exception as e:
                 print(f"Thread exception: {e}", flush=True)
@@ -83,7 +88,6 @@ class SerialHandler:
         """
         command = command.upper()
         
-        import slint
         if command in ['UP', 'CW', 'CLOCKWISE']:
             print("Rotated clockwise", flush=True)
             slint.invoke_from_event_loop(self.app.move_up)
