@@ -53,11 +53,12 @@ class SerialHandler:
             return
 
         while self.running:
+            print("Looping serial data... ")
             try:
                 if self.serial_conn.in_waiting > 0:
                     # Read line from serial (assuming commands end with newline)
                     print("Reading serial data... ")
-                    line = self.serial_conn.readline().decode('utf-8').strip()
+                    line = self.serial_conn.readline().decode('utf-8').rstrip()
                     
                     if line:
                         print(f"Received serial command: {line}")
