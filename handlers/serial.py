@@ -1,6 +1,5 @@
-import threading
-from time import sleep
 import slint
+from time import sleep
 
 try:
     import serial
@@ -34,48 +33,32 @@ class SerialHandler:
 
         try:
             print(f"Initializing serial connection on {port} at {baudrate} baud")
-            self.serial_conn = serial.Serial(port=port, baudrate=baudrate, timeout=1)
+            self.serial_conn = serial.Serial(port=port, baudrate=baudrate, timeout=0) # Non-blocking
             print("Serial connection established")
             
-            # Start reading serial data in a separate thread
-            self.running = True
-            self.read_thread = threading.Thread(target=self._read_serial_loop, daemon=True)
-            self.read_thread.start()
-            print("Serial reader thread started")
+            # Start polling serial data using Slint Timer
+            self.timer = slint.Timer(mode=slint.TimerMode.Repeated, interval=slint.timedelta(milliseconds=10), callback=self._poll_serial)
+            self.timer.start()
+            print("Serial polling timer started")
 
         except Exception as e:
             print(f"Error initializing serial handler: {e}")
             print("Serial input disabled")
             self.serial_conn = None
 
-    def _read_serial_loop(self):
+    def _poll_serial(self):
         if not self.serial_conn:
-            print("No serial connection — exiting thread")
             return
 
-        last_heartbeat = 0
-        print("Entering serial loop", flush=True)
-        while self.running:
-            try:
-                import time
-                current_time = time.time()
-                if current_time - last_heartbeat > 1.0:
-                    print(f"HEARTBEAT {current_time}", flush=True)
-                    last_heartbeat = current_time
-
-                # print("Checking in_waiting...", flush=True)
-                if self.serial_conn.in_waiting > 0:
-                    print("Data detected, reading...", flush=True)
-                    line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
-                    if line:
-                        print(f"Received: {line}", flush=True)
-                        self._process_command(line)
-                
-                # print("Sleeping...", flush=True)
-                sleep(0.01)
-            except Exception as e:
-                print(f"Thread exception: {e}", flush=True)
-                sleep(0.2)
+        try:
+            if self.serial_conn.in_waiting > 0:
+                # Read all available bytes to avoid lag
+                line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
+                if line:
+                    print(f"Received: {line}", flush=True)
+                    self._process_command(line)
+        except Exception as e:
+            print(f"Serial poll exception: {e}", flush=True)
 
     def _process_command(self, command):
         """
@@ -88,21 +71,23 @@ class SerialHandler:
         """
         command = command.upper()
         
+        # Since we are in a Timer callback (part of the event loop), we can call app methods directly!
         if command in ['UP', 'CW', 'CLOCKWISE']:
             print("Rotated clockwise", flush=True)
-            slint.invoke_from_event_loop(self.app.move_up)
+            self.app.move_up()
         elif command in ['DOWN', 'CCW', 'COUNTERCLOCKWISE', 'COUNTER-CLOCKWISE']:
             print("Rotated counterclockwise", flush=True)
-            slint.invoke_from_event_loop(self.app.move_down)
+            self.app.move_down()
         elif command in ['ENTER', 'PRESS', 'BUTTON']:
             print("Button pressed", flush=True)
-            slint.invoke_from_event_loop(self.app.enter) 
+            self.app.enter() 
         else:     
             print(f"Unknown command: {command}", flush=True)
 
     def cleanup(self):
-        """Close serial connection and stop reading thread."""
-        self.running = False
+        """Close serial connection and stop timer."""
+        if hasattr(self, 'timer'):
+            self.timer.stop()
         if self.serial_conn and self.serial_conn.is_open:
             self.serial_conn.close()
             print("Serial connection closed")
