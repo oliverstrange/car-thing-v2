@@ -57,8 +57,8 @@ class SerialHandler:
             try:
                 import time
                 current_time = time.time()
-                if current_time - last_heartbeat > 5:
-                    print("Serial reader thread heartbeat...")
+                if current_time - last_heartbeat > 1:
+                    print(f"Serial reader thread heartbeat... {current_time}")
                     last_heartbeat = current_time
 
                 if self.serial_conn.in_waiting > 0:

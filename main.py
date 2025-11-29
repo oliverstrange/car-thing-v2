@@ -15,6 +15,7 @@ def main():
         serial = SerialHandler(app)
 
         # Run Slint in the main thread
+        print("Starting Slint UI...")
         app.run()
         print("Application exited normally")
         
