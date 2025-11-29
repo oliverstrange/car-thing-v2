@@ -48,30 +48,22 @@ class SerialHandler:
             self.serial_conn = None
 
     def _read_serial_loop(self):
-        """Continuously read serial data and process commands."""
-        if not self.serial_conn:
-            return
+    if not self.serial_conn:
+        print("No serial connection — exiting thread")
+        return
 
-        while self.running:
+    while self.running:
+        try:
             print("Looping serial data... ")
-            try:
-                if self.serial_conn.in_waiting > 0:
-                    # Read line from serial (assuming commands end with newline)
-                    print("Reading serial data... ")
-                    line = self.serial_conn.readline().decode('utf-8').rstrip()
-                    
-                    if line:
-                        print(f"Received serial command: {line}")
-                        self._process_command(line)
-                
-                sleep(0.01)  # Small delay to prevent excessive CPU usage
-                
-            except serial.SerialException as e:
-                print(f"Serial error: {e}")
-                break
-            except Exception as e:
-                print(f"Error reading serial: {e}")
-                sleep(0.1)
+            if self.serial_conn.in_waiting > 0:
+                print("Reading serial data...")
+                line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
+                if line:
+                    self._process_command(line)
+            sleep(0.01)
+        except Exception as e:
+            print("Thread exception:", e)
+            sleep(0.2)
 
     def _process_command(self, command):
         """
