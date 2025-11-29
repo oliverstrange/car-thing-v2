@@ -16,6 +16,7 @@ export component App inherits Window {
     callback move_up();
     callback move_down();
     callback enter();
+    callback set_property(name: string, value: int);
     move_up() => {
         if (visible_screen_index == 0) {
             // Menu screen
@@ -47,6 +48,13 @@ export component App inherits Window {
             visible_screen_index = 0; // Return to menu
         }
     }
+    set_property(name, value) => {
+        if (name == "oil_temperature") {
+            oil_temperature = value;
+        } else if (name == "oil_pressure") {
+            oil_pressure = value;
+        }
+    }   
 
     // -----------------------------
     // Keyboard handler

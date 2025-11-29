@@ -96,8 +96,8 @@ class SerialHandler:
                 print(f"Set oil pressure to {pressure_value} psi", flush=True)
             except ValueError:
                 print(f"Invalid pressure command: {command}", flush=True)
-        elif command.startswith('TE'):
-            # Temperature command: TE followed by integer (e.g., TE60)
+        elif command.startswith('TM'):
+            # Temperature command: TM followed by integer (e.g., TM60)
             try:
                 temp_value = int(command[2:])
                 self.app.set_property('oil_temperature', temp_value)
