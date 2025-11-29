@@ -57,18 +57,19 @@ class SerialHandler:
             try:
                 import time
                 current_time = time.time()
-                if current_time - last_heartbeat > 1:
-                    print(f"Serial reader thread heartbeat... {current_time}")
+                if current_time - last_heartbeat > 1.0:
+                    print(f"HEARTBEAT {current_time}", flush=True)
                     last_heartbeat = current_time
 
                 if self.serial_conn.in_waiting > 0:
-                    print("Reading serial data...")
+                    print("Data detected, reading...", flush=True)
                     line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
                     if line:
+                        print(f"Received: {line}", flush=True)
                         self._process_command(line)
                 sleep(0.01)
             except Exception as e:
-                print("Thread exception:", e)
+                print(f"Thread exception: {e}", flush=True)
                 sleep(0.2)
 
     def _process_command(self, command):
