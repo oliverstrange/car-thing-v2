@@ -16,6 +16,7 @@ def main():
 
         # Run Slint in the main thread
         app.run()
+        print("Application exited normally")
         
     except Exception as e:
         print(f"Error running application: {e}")

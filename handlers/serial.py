@@ -52,9 +52,15 @@ class SerialHandler:
             print("No serial connection — exiting thread")
             return
 
+        last_heartbeat = 0
         while self.running:
             try:
-                print("Looping serial data... ")
+                import time
+                current_time = time.time()
+                if current_time - last_heartbeat > 5:
+                    print("Serial reader thread heartbeat...")
+                    last_heartbeat = current_time
+
                 if self.serial_conn.in_waiting > 0:
                     print("Reading serial data...")
                     line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
