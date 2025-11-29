@@ -1,5 +1,6 @@
 import slint
 from time import sleep
+from datetime import timedelta
 
 try:
     import serial
@@ -37,7 +38,7 @@ class SerialHandler:
             print("Serial connection established")
             
             # Start polling serial data using Slint Timer
-            self.timer = slint.Timer(mode=slint.TimerMode.Repeated, interval=slint.timedelta(milliseconds=10), callback=self._poll_serial)
+            self.timer = slint.Timer(mode=slint.TimerMode.Repeated, interval=timedelta(milliseconds=10), callback=self._poll_serial)
             self.timer.start()
             print("Serial polling timer started")
 
