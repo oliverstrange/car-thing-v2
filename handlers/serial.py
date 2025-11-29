@@ -38,8 +38,8 @@ class SerialHandler:
             print("Serial connection established")
             
             # Start polling serial data using Slint Timer
-            self.timer = slint.Timer(timedelta(milliseconds=10), self._poll_serial)
-            self.timer.start()
+            self.timer = slint.Timer()
+            self.timer.start(slint.TimerMode.Repeated, timedelta(milliseconds=10), self._poll_serial)
             print("Serial polling timer started")
 
         except Exception as e:
