@@ -13,7 +13,7 @@ except ImportError as e:
 class SerialHandler:
     def __init__(self, app, port='/dev/ttyACM0', baudrate=9600):
         """
-        Initialize GPIOHandler with serial communication.
+        Initialize SerialHandler with serial communication.
         
         Args:
             app: The application instance with move_up, move_down, and enter methods
@@ -28,7 +28,7 @@ class SerialHandler:
         self.serial_conn = None
 
         if not SERIAL_AVAILABLE:
-            print("GPIOHandler disabled (serial library not available)")
+            print("Serial handler disabled (serial library not available)")
             return
 
         try:
@@ -43,7 +43,7 @@ class SerialHandler:
             print("Serial reader thread started")
 
         except Exception as e:
-            print(f"Error initializing GPIOHandler: {e}")
+            print(f"Error initializing serial handler: {e}")
             print("Serial input disabled")
             self.serial_conn = None
 
@@ -56,6 +56,7 @@ class SerialHandler:
             try:
                 if self.serial_conn.in_waiting > 0:
                     # Read line from serial (assuming commands end with newline)
+                    print("Reading serial data... ")
                     line = self.serial_conn.readline().decode('utf-8').strip()
                     
                     if line:
@@ -90,8 +91,8 @@ class SerialHandler:
             self.app.move_down()
         elif command in ['ENTER', 'PRESS', 'BUTTON']:
             print("Button pressed")
-            self.app.enter()
-        else:
+            self.app.enter() 
+        else:     
             print(f"Unknown command: {command}")
 
     def cleanup(self):

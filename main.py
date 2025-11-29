@@ -10,7 +10,7 @@ def main():
         app = App()
 
         # -------------------------------
-        # Connect GPIO inputs
+        # Connect serial inputs
         # -------------------------------
         serial = SerialHandler(app)
 
