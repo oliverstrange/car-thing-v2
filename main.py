@@ -15,14 +15,8 @@ def main():
         serial = SerialHandler(app)
 
         # Run Slint in the main thread
-        print("Starting Slint UI... (DISABLED FOR TESTING)")
-        # app.run()
-        
-        # Keep main thread alive to test serial thread
-        import time
-        while True:
-            time.sleep(1)
-            
+        print("Starting Slint UI...")
+        app.run()
         print("Application exited normally")
         
     except Exception as e:

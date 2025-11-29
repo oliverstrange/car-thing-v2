@@ -83,17 +83,18 @@ class SerialHandler:
         """
         command = command.upper()
         
+        import slint
         if command in ['UP', 'CW', 'CLOCKWISE']:
-            print("Rotated clockwise")
-            self.app.move_up()
+            print("Rotated clockwise", flush=True)
+            slint.invoke_from_event_loop(self.app.move_up)
         elif command in ['DOWN', 'CCW', 'COUNTERCLOCKWISE', 'COUNTER-CLOCKWISE']:
-            print("Rotated counterclockwise")
-            self.app.move_down()
+            print("Rotated counterclockwise", flush=True)
+            slint.invoke_from_event_loop(self.app.move_down)
         elif command in ['ENTER', 'PRESS', 'BUTTON']:
-            print("Button pressed")
-            self.app.enter() 
+            print("Button pressed", flush=True)
+            slint.invoke_from_event_loop(self.app.enter) 
         else:     
-            print(f"Unknown command: {command}")
+            print(f"Unknown command: {command}", flush=True)
 
     def cleanup(self):
         """Close serial connection and stop reading thread."""
