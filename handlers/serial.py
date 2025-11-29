@@ -12,19 +12,18 @@ except ImportError as e:
 
 
 class SerialHandler:
-    def __init__(self, app, port='/dev/ttyACM0', baudrate=115200):
+    def __init__(self, app, port=None, baudrate=115200):
         """
         Initialize SerialHandler with serial communication.
         
         Args:
             app: The application instance with move_up, move_down, and enter methods
-            port: Serial port (default: 'COM3' for Windows, use '/dev/ttyUSB0' or '/dev/ttyACM0' for Linux)
-            baudrate: Serial baud rate (default: 9600)
+            port: Serial port (default: None, will auto-detect ACM0/ACM1)
+            baudrate: Serial baud rate (default: 115200)
         """
         sleep(1)
 
         self.app = app
-        self.port = port
         self.baudrate = baudrate
         self.serial_conn = None
 
@@ -32,20 +31,25 @@ class SerialHandler:
             print("Serial handler disabled (serial library not available)")
             return
 
-        try:
-            print(f"Initializing serial connection on {port} at {baudrate} baud")
-            self.serial_conn = serial.Serial(port=port, baudrate=baudrate, timeout=0) # Non-blocking
-            print("Serial connection established")
-            
+        ports_to_try = [port] if port else ['/dev/ttyACM0', '/dev/ttyACM1']
+        
+        for p in ports_to_try:
+            try:
+                print(f"Attempting to connect to {p} at {baudrate} baud...")
+                self.serial_conn = serial.Serial(port=p, baudrate=baudrate, timeout=0) # Non-blocking
+                print(f"Serial connection established on {p}")
+                self.port = p
+                break
+            except Exception as e:
+                print(f"Failed to connect to {p}: {e}")
+        
+        if self.serial_conn:
             # Start polling serial data using Slint Timer
             self.timer = slint.Timer()
             self.timer.start(slint.TimerMode.Repeated, timedelta(milliseconds=10), self._poll_serial)
             print("Serial polling timer started")
-
-        except Exception as e:
-            print(f"Error initializing serial handler: {e}")
-            print("Serial input disabled")
-            self.serial_conn = None
+        else:
+            print("Could not establish serial connection on any port")
 
     def _poll_serial(self):
         if not self.serial_conn:
