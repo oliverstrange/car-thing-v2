@@ -73,6 +73,8 @@ class SerialHandler:
         - "UP" or "CW" (clockwise) -> move_up()
         - "DOWN" or "CCW" (counter-clockwise) -> move_down()
         - "ENTER" or "PRESS" -> enter()
+        - "PR###" (e.g., "PR100") -> set oil_pressure to ###
+        - "TE###" (e.g., "TE60") -> set oil_temperature to ###
         """
         command = command.upper()
         
@@ -85,8 +87,24 @@ class SerialHandler:
             self.app.move_down()
         elif command in ['ENTER', 'PRESS', 'BUTTON']:
             print("Button pressed", flush=True)
-            self.app.enter() 
-        else:     
+            self.app.enter()
+        elif command.startswith('PR'):
+            # Pressure command: PR followed by integer (e.g., PR100)
+            try:
+                pressure_value = int(command[2:])
+                self.app.set_property('oil_pressure', pressure_value)
+                print(f"Set oil pressure to {pressure_value} psi", flush=True)
+            except ValueError:
+                print(f"Invalid pressure command: {command}", flush=True)
+        elif command.startswith('TE'):
+            # Temperature command: TE followed by integer (e.g., TE60)
+            try:
+                temp_value = int(command[2:])
+                self.app.set_property('oil_temperature', temp_value)
+                print(f"Set oil temperature to {temp_value}°C", flush=True)
+            except ValueError:
+                print(f"Invalid temperature command: {command}", flush=True)
+        else:
             print(f"Unknown command: {command}", flush=True)
 
     def cleanup(self):
