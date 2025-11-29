@@ -48,22 +48,22 @@ class SerialHandler:
             self.serial_conn = None
 
     def _read_serial_loop(self):
-    if not self.serial_conn:
-        print("No serial connection — exiting thread")
-        return
+        if not self.serial_conn:
+            print("No serial connection — exiting thread")
+            return
 
-    while self.running:
-        try:
-            print("Looping serial data... ")
-            if self.serial_conn.in_waiting > 0:
-                print("Reading serial data...")
-                line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
-                if line:
-                    self._process_command(line)
-            sleep(0.01)
-        except Exception as e:
-            print("Thread exception:", e)
-            sleep(0.2)
+        while self.running:
+            try:
+                print("Looping serial data... ")
+                if self.serial_conn.in_waiting > 0:
+                    print("Reading serial data...")
+                    line = self.serial_conn.readline().decode("utf-8", errors="ignore").rstrip()
+                    if line:
+                        self._process_command(line)
+                sleep(0.01)
+            except Exception as e:
+                print("Thread exception:", e)
+                sleep(0.2)
 
     def _process_command(self, command):
         """
