@@ -1,20 +1,20 @@
 import { VerticalBox } from "std-widgets.slint";
 import { MenuItem } from "../components/MenuItem.slint";
 
-export component MainMenu {
+export component Settings {
     width: 240px;
     height: 240px;
-    in-out property <int> selected_index: 0;
+    property <int> selected_index: 0;
     property <[{id: int, name: string}]> menu_items: [
-        { id: 0, name: "Oil Temperature" },
-        { id: 1, name: "Oil Pressure" },
-        { id: 2, name: "Lap Timer" },
-        { id: 3, name: "Settings" }
+        { id: 0, name: "Return to menu" },
+        { id: 1, name: "Dark mode - on" },
+        { id: 2, name: "Accent color - blue" },
+        { id: 3, name: "Default screen - menu" }
     ];
     callback move_up();
     callback move_down();
     callback enter();
-    callback item_selected(int); // Callback to notify parent of selected screen
+    callback return_to_menu(); // Callback to notify parent to return to main menu
     move_up() => {
         if (selected_index > 0) {
             selected_index -= 1;
@@ -26,8 +26,10 @@ export component MainMenu {
         }
     }
     enter() => {
-        // Notify parent to change to the selected screen (index + 1 because menu is screen 0)
-        item_selected(selected_index + 1);
+        if (selected_index == 0) {
+            // Return to main menu
+            return_to_menu();
+        }
     }
     VerticalBox {
         spacing: 25px;
