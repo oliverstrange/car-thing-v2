@@ -1,5 +1,6 @@
 export component TimeDisplay inherits Text {
     in property <int> seconds: 0;
+    in property <bool> dark_mode: true;
     property <bool> blinking: false;
     callback start_stop_blinking();
     start_stop_blinking => {
@@ -7,10 +8,10 @@ export component TimeDisplay inherits Text {
             blinking = !blinking;
         }
         if (!blinking) {
-            self.color = #ffffff;
+            self.color = dark_mode ? #ffffff : #333333;
         }
     }
-    color: #ffffff;
+    color: dark_mode ? #ffffff : #333333;
     font-size: 50px;
     text: {
         (floor(seconds / 60) < 10 ? "0" : "") + floor(seconds / 60) + ":" + (Math.mod(seconds, 60) < 10 ? "0" : "") + Math.mod(seconds, 60);
@@ -23,10 +24,10 @@ export component TimeDisplay inherits Text {
         interval: 400ms;
         running: blinking;
         triggered() => {
-            if (parent.color == #ffffff) {
-                parent.color = #ffffff78;
+            if (parent.color == (parent.dark_mode ? #ffffff : #333333)) {
+                parent.color = parent.dark_mode ? #ffffff78 : #33333378;
             } else {
-                parent.color = #ffffff;
+                parent.color = parent.dark_mode ? #ffffff : #333333;
             }
         }
     }

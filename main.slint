@@ -9,7 +9,9 @@ export component App inherits Window {
     title: "Circular Display App";
     width: 240px;
     height: 240px;
-    background: #111111;
+    background: dark_mode ? #111111 : #ffffff;
+    property <bool> dark_mode: false;   // Dark mode enabled by default
+    property <color> accent_color: #26ccfa; // Accent color blue by default
     property <int> selected_index: 0;   // Current menu item
     property <int> visible_screen_index: 0;   // Current visible screen
     property <int> oil_temperature: 60;
@@ -89,6 +91,7 @@ export component App inherits Window {
     main_menu := MainMenu {
         selected_index: selected_index;
         visible: visible_screen_index == 0;
+        dark_mode: dark_mode;
         item_selected(screen_index) => {
             visible_screen_index = screen_index;
         }
@@ -97,21 +100,32 @@ export component App inherits Window {
     OilTemperature {
         visible: visible_screen_index == 1;
         temperature: oil_temperature;
+        dark_mode: dark_mode;
     }
 
     OilPressure {
         visible: visible_screen_index == 2;
         pressure: oil_pressure;
+        dark_mode: dark_mode;
     }
 
     lap_timer := LapTimer {
         visible: visible_screen_index == 3;
+        dark_mode: dark_mode;
+        accent_color: accent_color;
     }
 
     settings := Settings {
         visible: visible_screen_index == 4;
+        dark_mode: dark_mode;
         return_to_menu() => {
             visible_screen_index = 0;
+        }
+        toggle_dark_mode() => {
+            dark_mode = !dark_mode;
+        }
+        change_accent_color(new_color) => {
+            accent_color = new_color;
         }
     }
 }

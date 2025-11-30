@@ -5,16 +5,26 @@ export component Settings {
     width: 240px;
     height: 240px;
     property <int> selected_index: 0;
+    property <int> selected_color_index: 0;
+    in property <bool> dark_mode: true;
     property <[{id: int, name: string}]> menu_items: [
         { id: 0, name: "Return to menu" },
-        { id: 1, name: "Dark mode - on" },
-        { id: 2, name: "Accent color - blue" },
+        { id: 1, name: "Dark mode - " + (dark_mode ? "on" : "off") },
+        { id: 2, name: "Accent color - " + color_items[selected_color_index].name },
         { id: 3, name: "Default screen - menu" }
+    ];
+    property <[{id: int, name: string, color: color}]> color_items: [
+        { id: 0, name: "Blue", color: #26ccfa },
+        { id: 1, name: "Red", color: #ff0000 },
+        { id: 4, name: "Cyan", color: #00ffff },
+        { id: 5, name: "Magenta", color: #ff00ff }
     ];
     callback move_up();
     callback move_down();
     callback enter();
     callback return_to_menu(); // Callback to notify parent to return to main menu
+    callback toggle_dark_mode(); // Callback to notify parent to toggle dark mode
+    callback change_accent_color(color); // Callback to notify parent to change accent color
     move_up() => {
         if (selected_index > 0) {
             selected_index -= 1;
@@ -29,6 +39,13 @@ export component Settings {
         if (selected_index == 0) {
             // Return to main menu
             return_to_menu();
+        } else if (selected_index == 1) {
+            // Toggle dark mode
+            toggle_dark_mode();
+        } else if (selected_index == 2) {
+            // Change accent color
+            selected_color_index = Math.mod(selected_color_index + 1, color_items.length);
+            change_accent_color(color_items[selected_color_index].color);
         }
     }
     VerticalBox {
@@ -39,8 +56,9 @@ export component Settings {
             easing: ease-in-out;
         }
         for item in root.menu_items: MenuItem {
-            text: item.name;
+            text: item.id == 1 ? "Dark mode - " + (root.dark_mode ? "on" : "off") : item.name;
             selected: selected_index == item.id;
+            dark_mode: root.dark_mode;
         }
     }
 }

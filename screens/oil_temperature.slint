@@ -2,6 +2,7 @@ import { VerticalBox } from "std-widgets.slint";
 
 export component OilTemperature {
     in property <int> temperature;
+    in property <bool> dark_mode: true;
     width: 240px;
     height: 240px;
     bgpath := Path {
@@ -30,7 +31,7 @@ export component OilTemperature {
     }
 
     Text {
-        color: #ffffff;
+        color: dark_mode ? #ffffff : #333333;
         font-size: 50px;
         text: temperature + "c";
     }
