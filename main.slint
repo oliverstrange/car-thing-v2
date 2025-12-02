@@ -10,10 +10,11 @@ export component App inherits Window {
     width: 240px;
     height: 240px;
     background: dark_mode ? #111111 : #ffffff;
-    property <bool> dark_mode: false;   // Dark mode enabled by default
-    property <color> accent_color: #26ccfa; // Accent color blue by default
+    in-out property <bool> dark_mode: false;   // Dark mode enabled by default
+    in-out property <color> accent_color: #26ccfa; // Accent color blue by default
+    in-out property <int> start_screen_index: 0;
     property <int> selected_index: 0;   // Current menu item
-    property <int> visible_screen_index: 0;   // Current visible screen
+    property <int> visible_screen_index: start_screen_index;   // Current visible screen
     property <int> oil_temperature: 60;
     property <int> oil_pressure: 50;
     callback move_up();

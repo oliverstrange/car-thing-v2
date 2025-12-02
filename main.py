@@ -1,10 +1,12 @@
 import slint
 from handlers.serial import SerialHandler
-
+from handlers.storage import StorageHandler
 
 def main():
     """Main function to run the circular display app with Python backend."""
     try:
+
+
         # Load Slint app
         App = slint.load_file("main.slint").App
         app = App()
@@ -13,6 +15,11 @@ def main():
         # Connect serial inputs
         # -------------------------------
         serial = SerialHandler(app)
+
+        # -------------------------------
+        # Connect storage handler
+        # -------------------------------
+        storage = StorageHandler(app)
 
         # Run Slint in the main thread
         print("Starting Slint UI...")
