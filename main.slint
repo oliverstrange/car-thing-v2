@@ -71,17 +71,14 @@ export component App inherits Window {
     my-key-handler := FocusScope {
         key-pressed(event) => {
             if (event.text == Key.UpArrow) {
-                debug("Up pressed");
                 move_up();
             }
             ;
             if (event.text == Key.DownArrow) {
-                debug("Down pressed");
                 move_down();
             }
             ;
             if (event.text == Key.Return) {
-                debug("Enter pressed");
                 enter();
             }
             ;

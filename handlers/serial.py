@@ -80,20 +80,16 @@ class SerialHandler:
         
         # Since we are in a Timer callback (part of the event loop), we can call app methods directly!
         if command in ['UP', 'CW', 'CLOCKWISE']:
-            print("Rotated clockwise", flush=True)
             self.app.move_up()
         elif command in ['DOWN', 'CCW', 'COUNTERCLOCKWISE', 'COUNTER-CLOCKWISE']:
-            print("Rotated counterclockwise", flush=True)
             self.app.move_down()
         elif command in ['ENTER', 'PRESS', 'BUTTON']:
-            print("Button pressed", flush=True)
             self.app.enter()
         elif command.startswith('PR'):
             # Pressure command: PR followed by integer (e.g., PR100)
             try:
                 pressure_value = int(command[2:])
                 self.app.set_property('oil_pressure', pressure_value)
-                print(f"Set oil pressure to {pressure_value} psi", flush=True)
             except ValueError:
                 print(f"Invalid pressure command: {command}", flush=True)
         elif command.startswith('TM'):
@@ -101,7 +97,6 @@ class SerialHandler:
             try:
                 temp_value = int(command[2:])
                 self.app.set_property('oil_temperature', temp_value)
-                print(f"Set oil temperature to {temp_value}°C", flush=True)
             except ValueError:
                 print(f"Invalid temperature command: {command}", flush=True)
         else:
