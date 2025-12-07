@@ -49,15 +49,15 @@ export component LapTimer {
         width: 100%;
         height: 100%;
         MoveTo {
-            x: start-x + radius * sin(360deg);
-            y: start-y + radius * cos(360deg);
+            x: start-x + radius * sin(180deg);
+            y: start-y + radius * cos(180deg);
         }
 
         ArcTo {
             radius-x: bgpath.radius;
             radius-y: bgpath.radius;
-            x: start-x + bgpath.radius * sin(-(bgpath.progress) * 360deg);
-            y: start-y + bgpath.radius * cos(-(bgpath.progress) * 360deg);
+            x: start-x + bgpath.radius * sin(180deg - (bgpath.progress) * 360deg);
+            y: start-y + bgpath.radius * cos(180deg - (bgpath.progress) * 360deg);
             sweep: bgpath.progress > 0;
             large-arc: bgpath.progress > 0.5;
         }
@@ -80,15 +80,15 @@ export component LapTimer {
         width: 100%;
         height: 100%;
         MoveTo {
-            x: start-x + radius * sin(360deg);
-            y: start-y + radius * cos(360deg);
+            x: start-x + radius * sin(180deg);
+            y: start-y + radius * cos(180deg);
         }
 
         ArcTo {
             radius-x: path.radius;
             radius-y: path.radius;
-            x: start-x + path.radius * sin(-(path.progress) * 360deg);
-            y: start-y + path.radius * cos(-(path.progress) * 360deg);
+            x: start-x + path.radius * sin(180deg - (path.progress) * 360deg);
+            y: start-y + path.radius * cos(180deg - (path.progress) * 360deg);
             sweep: path.progress > 0;
             large-arc: path.progress > 0.5;
         }
