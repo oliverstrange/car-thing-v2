@@ -3,6 +3,7 @@ import { MainMenu } from "./screens/main_menu.slint";
 import { OilTemperature } from "./screens/oil_temperature.slint";
 import { OilPressure } from "./screens/oil_pressure.slint";
 import { LapTimer } from "./screens/lap_timer.slint";
+import { ShiftLight } from "./screens/shift_light.slint";
 import { Settings } from "./screens/settings.slint";
 
 export component App inherits Window {
@@ -28,7 +29,7 @@ export component App inherits Window {
         } else if (visible_screen_index == 3) {
             // Lap timer screen
             lap_timer.start_stop();
-        } else if (visible_screen_index == 4) {
+        } else if (visible_screen_index == 5) {
             // Settings screen
             settings.move_up();
         }
@@ -40,7 +41,7 @@ export component App inherits Window {
         } else if (visible_screen_index == 3) {
             // Lap timer screen
             lap_timer.reset();
-        } else if (visible_screen_index == 4) {
+        } else if (visible_screen_index == 5) {
             // Settings screen
             settings.move_down();
         }
@@ -49,11 +50,11 @@ export component App inherits Window {
         if (visible_screen_index == 0) {
             // Menu screen
             main_menu.enter();
-        } else if (visible_screen_index == 4) {
+        } else if (visible_screen_index == 5) {
             // Settings screen
             settings.enter();
-        } else if (visible_screen_index == 1 || visible_screen_index == 2 || visible_screen_index == 3) {
-            // Oil Temperature, Oil Pressure, or Lap Timer screens - return to menu
+        } else {
+            // Return to menu
             visible_screen_index = 0;
         }
     }
@@ -113,8 +114,13 @@ export component App inherits Window {
         accent_color: accent_color;
     }
 
-    settings := Settings {
+    shift_light := ShiftLight {
         visible: visible_screen_index == 4;
+        dark_mode: dark_mode;
+    }
+
+    settings := Settings {
+        visible: visible_screen_index == 5;
         dark_mode: dark_mode;
         return_to_menu() => {
             visible_screen_index = 0;

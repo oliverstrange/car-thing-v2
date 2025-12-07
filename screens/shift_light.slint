@@ -1,0 +1,10 @@
+export component ShiftLight {
+    in property <bool> dark_mode: true;
+    Text {
+        text: "SHIFT LIGHT";
+        font-size: 16px;
+        color: #7a7a7a;
+        x: (parent.width - self.width) / 2;
+        y: parent.height - 50px;
+    }
+}
